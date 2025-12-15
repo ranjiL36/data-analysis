@@ -1,0 +1,115 @@
+# Retail Customer Data Cleaning & Preparation Project
+
+## 1. Project Overview
+
+This project focuses on cleaning, preparing, and enriching a large retail transactions dataset to make it suitable for downstream analytics such as customer segmentation and campaign response analysis. The workflow is implemented in Python using pandas within a Jupyter notebook.
+
+## 2. Dataset Description
+
+Two primary CSV files are used: a transactions file and a campaign response file, both keyed by `customer_id`.
+
+**Transactions data (`Retail_Data_Transactions.csv`)**:
+- Columns: `customer_id`, `trans_date`, `tran_amount`
+- Size: 125,000 rows and 3 columns before merging
+
+**Response data**:
+- Columns: `customer_id`, `response` (0 or 1 indicating campaign response)
+- Size: 6,884 rows and 2 columns
+
+These datasets are merged on `customer_id` to create a unified table of 125,000 rows and 4 columns (`customer_id`, `trans_date`, `tran_amount`, `response`).
+
+## 3. Objectives
+
+- Clean and standardize transaction and response data for analysis
+- Convert date strings to proper date types and derive calendar-based features
+- Aggregate transactional information to customer level (recency, frequency, monetary)
+- Prepare a feature-ready customer table with segment labels for modeling and business insights
+
+## 4. Tools and Technologies
+
+- **Programming language**: Python
+- **Main library**: pandas for data loading, cleaning, merging, and aggregation
+- **Environment**: Jupyter Notebook (`.ipynb`)
+
+## 5. Data Cleaning Steps
+
+### 5.1 Library Import and Data Loading
+- Imported pandas and read the transactions CSV into a DataFrame `trxn`
+- Loaded the response file and merged it with transactions on `customer_id`
+
+### 5.2 Structure Checks and Basic Profiling
+- Inspected the head and tail of the DataFrames to verify schema and data types
+- Used descriptive statistics (`describe`) on `tran_amount` and `response` to understand distributions, ranges, and missing values
+
+### 5.3 Handling Dates
+- Converted `trans_date` from string format like `11-Feb-13` to proper datetime format `YYYY-MM-DD`
+- Verified that the conversion maintained 124,969 valid rows and date ranges consistent with the business period (2011–2015)
+
+### 5.4 Missing Values and Type Consistency
+- Checked counts for `tran_amount` and `response` and ensured numeric types suitable for aggregation and modeling
+- Ensured the final merged DataFrame retained a consistent customer-level key (`customer_id`)
+
+### 5.5 Feature Engineering – Month Extraction
+- Created a new column `month` by extracting the month number from the transaction date
+- Aggregated transaction amounts by `month` to identify high-revenue months
+
+## 6. Aggregation and RFM Feature Creation
+
+Customer-level RFM metrics were computed to summarize each customer's transaction behavior.
+
+### 6.1 Frequency
+- Count of transactions per `customer_id`
+- Identified top customers by transaction count (e.g., customers with 35–39 transactions)
+
+### 6.2 Monetary
+- Sum of `tran_amount` per `customer_id`
+- Calculated total spend and ranked customers by highest monetary value (examples include customers with spend exceeding 2,500 units)
+
+### 6.3 Recency
+- Defined a reference date in 2015 and computed the number of days since the last transaction for each customer
+- Stored as a `recency` value in the final customer table
+
+These three metrics were combined into a consolidated RFM table with index `customer_id` and columns `recency`, `frequency`, and `monetary`.
+
+## 7. Customer Segmentation
+
+A simple rule-based segmentation was applied on RFM metrics to categorize customers.
+
+- Each customer is assigned to a segment such as `P0` or `P2` based on thresholds or quantiles of recency, frequency, and monetary values
+- The final DataFrame includes: `customer_id`, `recency`, `frequency`, `monetary`, and `Segment`
+
+These segments are used to identify high-value, at-risk, and low-engagement customers for future marketing and retention strategies.
+
+## 8. Key Insights from Prepared Data
+
+- **Seasonal Patterns**: Month-wise aggregation showed certain months (e.g., months 1, 8, and 10) contributing the highest total transaction amounts, indicating strong seasonal patterns
+- **High-Value Customers**: Top customers by frequency and monetary value can be clearly identified, which is useful for loyalty programs and targeted campaigns
+- **Segment-Response Correlation**: The response field aligned with the RFM table enables analysis of how different customer segments respond to marketing activities
+
+## 9. Data Quality Metrics
+
+| Metric | Value |
+|--------|-------|
+| Total Transactions | 125,000 |
+| Total Customers | 6,884 |
+| Valid Records After Cleaning | 124,969 |
+| Transaction Amount Range | ₹10 – ₹105 |
+| Campaign Response Rate | ~11.08% |
+| Date Range | 2011–2015 |
+
+## 10. Possible Extensions
+
+- **Predictive Modeling**: Train classification models to predict `response` using RFM and other engineered features
+- **Advanced Clustering**: Apply clustering techniques (such as K-Means) on RFM to derive data-driven customer segments
+- **Dashboard Development**: Build dashboards to monitor monthly revenue, segment performance, and campaign effectiveness
+- **Customer Lifetime Value**: Calculate CLV and churn prediction for retention strategies
+
+## 11. Conclusion
+
+This data cleaning and preparation workflow transforms raw transactional data into a structured, feature-enriched customer dataset ready for analytical and predictive modeling tasks. The RFM segmentation provides actionable insights into customer behavior, enabling targeted business strategies and improved marketing ROI.
+
+---
+
+**Project Status**: Completed  
+**Date**: December 15, 2025  
+**Environment**: Python 3.x with pandas

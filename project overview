@@ -1,0 +1,65 @@
+A clear README should briefly explain what the project does, how it works, and how someone can run it. Below is a ready‑to‑use README template tailored to your notebook; you can copy this into `README.md` and adjust project/repo names as needed.[1]
+
+***
+
+# Retail Customer Data Cleaning & RFM Preparation
+
+## Overview
+
+This project performs data cleaning, preparation, and feature engineering on a retail transactions dataset to create an analysis-ready customer-level table for RFM (Recency, Frequency, Monetary) analysis and campaign response modeling.  All steps are implemented in Python using pandas inside a Jupyter Notebook.[1]
+
+## Dataset
+
+The project uses two main CSV files joined on `customer_id`:[1]
+
+- `Retail_Data_Transactions.csv`  
+  - 125,000 rows, 3 columns: `customer_id`, `trans_date`, `tran_amount`.[1]
+- Campaign response data  
+  - 6,884 rows, 2 columns: `customer_id`, `response` (0/1).[1]
+
+After merging, a unified dataset with 125,000 rows and 4 columns (`customer_id`, `trans_date`, `tran_amount`, `response`) is created.[1]
+
+## Key Steps
+
+- Load and inspect raw transaction and response data with pandas.[1]
+- Convert `trans_date` from string format to proper datetime and extract the `month` feature.[1]
+- Handle data types and prepare clean numeric columns for aggregation.[1]
+- Aggregate transactions to customer level to compute RFM metrics:
+  - **Recency**: days since last transaction.
+  - **Frequency**: number of transactions.
+  - **Monetary**: total transaction amount per customer.[1]
+- Create a customer segmentation label (`Segment`, e.g., `P0`, `P2`) based on RFM values.[1]
+
+## Project Structure
+
+- `Data_cleaning__Preparation__lyst7989-2.ipynb` – main notebook containing all cleaning, preparation, and RFM feature engineering steps.[1]
+- `Retail_Data_Transactions.csv` – transaction-level data (not included here if proprietary).[1]
+- `response.csv` or equivalent – campaign response data (0/1).[1]
+
+You can also add an `output` folder to store the final customer RFM table and segment labels.
+
+## How to Run
+
+1. Clone this repository and place the input CSV files in the project directory.  
+2. Create and activate a Python environment (optional but recommended).  
+3. Install dependencies:  
+   ```bash
+   pip install pandas
+   ```  
+4. Open the notebook:  
+   ```bash
+   jupyter notebook Data_cleaning__Preparation__lyst7989-2.ipynb
+   ```  
+5. Run all cells to reproduce the cleaning, feature engineering, and segmentation steps.[1]
+
+## Results and Insights
+
+- Month-wise aggregation shows certain months (e.g., 1, 8, 10) generating the highest transaction amounts, reflecting seasonal patterns.[1]
+- The customer-level RFM table enables identification of high-value and low-engagement customers, as well as simple rule-based segments via the `Segment` column.[1]
+
+## Future Work
+
+- Train models to predict `response` using RFM and other features.[1]
+- Apply clustering (e.g., K-Means) for data-driven customer segmentation.[1]
+- Build dashboards to visualize revenue, segments, and campaign performance.[1]
+
